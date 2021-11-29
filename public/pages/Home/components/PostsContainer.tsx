@@ -3,7 +3,7 @@ import "./PostsContainer.scss"
 import React from "react"
 
 import { Post, Tag, CurrentUser } from "@fider/models"
-import { Loader, Input, ImageViewer } from "@fider/components"
+import { Loader, Input } from "@fider/components"
 import { actions, navigator, querystring } from "@fider/services"
 import IconSearch from "@fider/assets/images/heroicons-search.svg"
 import IconX from "@fider/assets/images/heroicons-x.svg"
