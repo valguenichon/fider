@@ -23,16 +23,16 @@ export default class InvitationsPage extends AdminBasePage<any, InvitationsPageS
     super(props)
 
     this.state = {
-      subject: `[${Fider.session.tenant.name}] We would like to hear from you!`,
-      message: `Hi,
+      subject: `[${Fider.session.tenant.name}] Rejoins la cause play !`,
+      message: `Salut glorieux sympathisant de la cause play,
 
-We are inviting you to join the ${Fider.session.tenant.name} feedback site, a place where you can vote, discuss and share your ideas and thoughts on how to improve our services!
+Tu es invité à rejoindre la communauté de choix de ${Fider.session.tenant.name}, un lieu exceptionnel ou tu pourras exprimer ton envie de jeux ou voter pour ton préféré.
+À la clé, le jeu le plus populaire sera mis au programme d'un live "dans le rétro" avec cosplay. Il sera ensuite retiré de la liste pour passer au suivant et ainsi de suite, jusqu'à épuisement de la liste.
 
-Click the link below to join!
+Pour commencer, clique sur le lien ci-dessous :
 
 %invite%
 
-Regards,
 ${Fider.session.user.name} (${Fider.session.tenant.name})`,
       recipients: [],
       numOfRecipients: 0,
