@@ -2,10 +2,12 @@ package env
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"runtime"
 	"strings"
+	"time"
 
 	"path"
 
@@ -14,17 +16,17 @@ import (
 )
 
 var (
-	// these values are replaced during CI build
-	buildnumber = ""
-	version     = "0.20.0-dev"
+	// this value is set by the CI build
+	commithash = ""
+	version    = "0.22.0"
 )
 
 func Version() string {
-	if buildnumber == "" {
-		return version
+	if commithash == "" {
+		return fmt.Sprintf("%s-dev", version)
 	}
 
-	return fmt.Sprintf("%s-%s", version, buildnumber)
+	return fmt.Sprintf("%s-%s", version, commithash)
 }
 
 type config struct {
@@ -35,13 +37,19 @@ type config struct {
 		Certificate    string `env:"SSL_CERT"`
 		CertificateKey string `env:"SSL_CERT_KEY"`
 	}
+	HTTP struct {
+		ReadTimeout  time.Duration `env:"HTTP_READ_TIMEOUT,default=5s,strict"`
+		WriteTimeout time.Duration `env:"HTTP_WRITE_TIMEOUT,default=10s,strict"`
+		IdleTimeout  time.Duration `env:"HTTP_IDLE_TIMEOUT,default=120s,strict"`
+	}
 	Port       string `env:"PORT,default=3000"`
 	HostMode   string `env:"HOST_MODE,default=single"`
-	HostDomain string `env:"HOST_DOMAIN,required"`
+	HostDomain string `env:"HOST_DOMAIN"`
+	BaseURL    string `env:"BASE_URL"`
 	Locale     string `env:"LOCALE,default=en"`
 	JWTSecret  string `env:"JWT_SECRET,required"`
 	Paddle     struct {
-		IsSandbox      bool   `env:"PADDLE_SANDBOX,default=true"`
+		IsSandbox      bool   `env:"PADDLE_SANDBOX,default=false"`
 		VendorID       string `env:"PADDLE_VENDOR_ID"`
 		VendorAuthCode string `env:"PADDLE_VENDOR_AUTHCODE"`
 		PlanID         string `env:"PADDLE_PLAN_ID"`
@@ -140,6 +148,19 @@ func Reload() {
 		panic(errors.Wrap(err, "failed to parse environment variables"))
 	}
 
+	if IsSingleHostMode() {
+		if Config.HostDomain != "" {
+			panic("HOST_DOMAIN environment variable has been replaced by BASE_URL. Set it to your site base url, e.g: https://feedback.mysite.com")
+		}
+
+		mustBeSet("BASE_URL")
+
+		_, err := url.Parse(Config.BaseURL)
+		if err != nil {
+			panic(errors.Wrap(err, "'%s' is not a valid URL", Config.BaseURL))
+		}
+	}
+
 	// Email Type can be inferred if absense
 	if Config.Email.Type == "" {
 		if Config.Email.Mailgun.APIKey != "" {
@@ -175,7 +196,7 @@ func Reload() {
 func mustBeSet(name string) {
 	value := os.Getenv(name)
 	if value == "" {
-		panic(fmt.Errorf("Could not find environment variable named '%s'", name))
+		panic(fmt.Errorf("could not find environment variable named '%s'", name))
 	}
 }
 

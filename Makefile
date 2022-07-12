@@ -2,7 +2,7 @@
 ##
 ## For more information, refer to https://suva.sh/posts/well-documented-makefiles/
 
-LDFLAGS += -X github.com/getfider/fider/app/pkg/env.buildnumber=${BUILDNUMBER}
+LDFLAGS += -X github.com/getfider/fider/app/pkg/env.commithash=${COMMITHASH}
 
 
 
@@ -78,7 +78,7 @@ watch-ui: ## Build and run server in watch mode
 lint: lint-server lint-ui ## Lint server and ui
 
 lint-server: ## Lint server code
-	golangci-lint run
+	golangci-lint run --timeout 2m
 
 lint-ui: ## Lint ui code
 	npx eslint .

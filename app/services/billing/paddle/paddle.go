@@ -47,6 +47,7 @@ func getApiBasePath() string {
 	return "https://vendors.paddle.com"
 }
 
+// generateCheckoutLink generates a checkout link using Paddle API
 func generateCheckoutLink(ctx context.Context, c *cmd.GenerateCheckoutLink) error {
 	passthrough, err := json.Marshal(c.Passthrough)
 	if err != nil {
@@ -57,7 +58,6 @@ func generateCheckoutLink(ctx context.Context, c *cmd.GenerateCheckoutLink) erro
 	params.Set("vendor_id", env.Config.Paddle.VendorID)
 	params.Set("vendor_auth_code", env.Config.Paddle.VendorAuthCode)
 	params.Set("product_id", env.Config.Paddle.PlanID)
-	params.Set("return_url", c.ReturnURL)
 	params.Set("passthrough", string(passthrough))
 
 	req := &cmd.HTTPRequest{

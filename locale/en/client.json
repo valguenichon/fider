@@ -26,8 +26,8 @@
   "error.internalerror.title": "Shoot! Well, this is unexpected…",
   "error.pagenotfound.text": "The link you clicked may be broken or the page may have been removed.",
   "error.pagenotfound.title": "Page not found",
-  "error.unauthorized.text": "You need to authenticate before accessing accessing this page.",
-  "error.unauthorized.title": "Unauthorized",
+  "error.unauthorized.text": "You are not authorized to view this page.",
+  "error.unauthorized.title": "Not Authorized",
   "home.form.defaultinvitation": "Enter your suggestion here...",
   "home.form.defaultwelcomemessage": "We'd love to hear what you're thinking about.\n\nWhat can we do better? This is the place for you to vote, discuss and share ideas.",
   "home.lonely.suggestion": "It's recommended that you create <0>at least 3</0> suggestions here before sharing this site. The initial content is important to start engaging your audience.",
@@ -83,7 +83,7 @@
   "modal.deletecomment.text": "This process is irreversible. <0>Are you sure?</0>",
   "modal.showvotes.message.zeromatches": "No users found matching <0>{0}</0>.",
   "modal.showvotes.query.placeholder": "Search for users by name...",
-  "modal.signin.header": "Sign in to post and vote",
+  "modal.signin.header": "Sign in to participate and vote",
   "mynotifications.label.readrecently": "Read on last 30 days.",
   "mynotifications.message.nounread": "No unread notifications.",
   "mynotifications.page.subtitle": "Stay up to date with what's happening",
@@ -148,6 +148,6 @@
   "signin.message.locked.title": "<0>{0}</0> is currently locked.",
   "signin.message.onlyadmins": "Currently only allowed to sign in to an administrator account",
   "signin.message.private.text": "If you have an account or an invitation, you may use following options to sign in.",
-  "signin.message.private.title": "<0>{0}</0> is a private space and requires an invitation to join it.",
+  "signin.message.private.title": "<0>{0}</0> is a private space, you must sign in to participate and vote.",
   "{count, plural, one {# tag} other {# tags}}": "{count, plural, one {# tag} other {# tags}}"
 }

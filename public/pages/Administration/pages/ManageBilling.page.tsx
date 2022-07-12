@@ -1,14 +1,18 @@
-import { Moment, Money } from "@fider/components"
+import React from "react"
+import { Button, Moment, Money } from "@fider/components"
 import { VStack } from "@fider/components/layout"
 import { useFider } from "@fider/hooks"
 import { BillingStatus } from "@fider/models"
-import { actions } from "@fider/services"
-import React from "react"
 import { AdminPageContainer } from "../components/AdminBasePage"
 import { CardDetails } from "../components/billing/CardDetails"
-import { SubscribeButton } from "../components/billing/SubscribeButton"
+import { usePaddle } from "../hooks/use-paddle"
 
 interface ManageBillingPageProps {
+  paddle: {
+    isSandbox: boolean
+    vendorId: string
+    planId: string
+  }
   status: BillingStatus
   trialEndsAt: string
   subscriptionEndsAt: string
@@ -29,15 +33,27 @@ interface ManageBillingPageProps {
   }
 }
 
-const subscribe = async () => {
-  const result = await actions.generateCheckoutLink()
-  if (result.ok) {
-    location.href = result.data.url
-  }
+const SubscribeButton = (props: { price: string; onClick: () => void }) => {
+  return (
+    <p>
+      <Button variant="primary" onClick={props.onClick}>
+        Subscribe for {props.price}/mo
+      </Button>
+
+      <span className="block text-muted">VAT/Tax may be added during checkout.</span>
+    </p>
+  )
 }
 
 const ActiveSubscriptionInformation = (props: ManageBillingPageProps) => {
   const fider = useFider()
+  const { isReady, openUrl } = usePaddle({ ...props.paddle })
+
+  const open = (url: string) => () => {
+    if (isReady) {
+      openUrl(url)
+    }
+  }
 
   return (
     <VStack>
@@ -56,11 +72,11 @@ const ActiveSubscriptionInformation = (props: ManageBillingPageProps) => {
       </p>
       <p>
         You can{" "}
-        <a rel="noopener" target="_blank" className="text-link" href={props.subscription.updateURL}>
+        <a href="#" rel="noopener" className="text-link" onClick={open(props.subscription.updateURL)}>
           update
         </a>{" "}
         your payment information or{" "}
-        <a rel="noopener" target="_blank" className="text-link" href={props.subscription.cancelURL}>
+        <a href="#" rel="noopener" className="text-link" onClick={open(props.subscription.cancelURL)}>
           cancel
         </a>{" "}
         your subscription.
@@ -71,6 +87,7 @@ const ActiveSubscriptionInformation = (props: ManageBillingPageProps) => {
 
 const CancelledSubscriptionInformation = (props: ManageBillingPageProps) => {
   const fider = useFider()
+  const { price, openCheckoutUrl } = usePaddle({ ...props.paddle })
 
   const isExpired = new Date(props.subscriptionEndsAt) <= new Date()
 
@@ -94,13 +111,14 @@ const CancelledSubscriptionInformation = (props: ManageBillingPageProps) => {
           . <br /> Resubscribe to avoid a service interruption.
         </p>
       )}
-      <SubscribeButton onClick={subscribe} />
+      <SubscribeButton onClick={openCheckoutUrl} price={price} />
     </VStack>
   )
 }
 
 const TrialInformation = (props: ManageBillingPageProps) => {
   const fider = useFider()
+  const { price, openCheckoutUrl } = usePaddle({ ...props.paddle })
 
   const isExpired = new Date(props.trialEndsAt) <= new Date()
 
@@ -126,7 +144,7 @@ const TrialInformation = (props: ManageBillingPageProps) => {
         </p>
       )}
 
-      <SubscribeButton onClick={subscribe} />
+      <SubscribeButton onClick={openCheckoutUrl} price={price} />
     </VStack>
   )
 }
@@ -136,10 +154,10 @@ const FreeForeverInformation = () => {
     <VStack>
       <h3 className="text-display">Free!</h3>
       <p>
-        For some reason this site is under a <strong>Forever Free</strong> subscription, enjoy it! 🎉
+        This site is on a <strong>Forever Free</strong> subscription, enjoy it! 🎉
       </p>
-      <p>
-        You can still help us fund the developer of Fider by contribution to our{" "}
+      <p className="text-muted">
+        You can still help us fund the development of Fider by contribution to our{" "}
         <a rel="noopener" target="_blank" className="text-link" href="https://opencollective.com/fider">
           OpenCollective
         </a>
@@ -160,7 +178,7 @@ const OpenCollectiveInformation = () => {
         </a>{" "}
         donation.
       </p>
-      <p>Thanks for being a financial support! Keep your monthly donation active to avoid a service interruption.</p>
+      <p className="text-muted">Thanks for being a financial support! Keep your monthly donation active to avoid a service interruption.</p>
     </VStack>
   )
 }
@@ -178,13 +196,12 @@ const ManageBillingPage = (props: ManageBillingPageProps) => {
 
       {showPaddleFooter && (
         <p className="text-muted mt-4">
-          We use{" "}
           <strong>
             <a href="https://paddle.com" target="_blank" rel="noopener" className="text-link">
               Paddle
             </a>
           </strong>{" "}
-          as our billing partner. You may see {'"PADDLE.NET* FIDERIO"'} on your credit card.
+          is our billing partner. You may see {'"PADDLE.NET* FIDER"'} on your credit card.
         </p>
       )}
     </AdminPageContainer>

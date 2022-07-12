@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://getfider.com">
+  <a href="https://fider.io">
     <img src="etc/logo-small.png" />
   </a>
   <h1 align="center">Fider</h1>
@@ -11,7 +11,7 @@
 
 <div align="center">
   <h3>
-    <a href="https://getfider.com">
+    <a href="https://fider.io">
       Website
     </a>
     <span> | </span>
@@ -22,7 +22,7 @@
 </div>
 
 <div align="center">
-  <sub>Built with ❤︎ by <a href="https://github.com/goenning">Guilherme Oenning</a> and <a href="https://github.com/getfider/fider/graphs/contributors">contributors</a></sub>
+  <sub>Built with ❤️ by <a href="https://github.com/goenning">Guilherme Oenning</a> and <a href="https://github.com/getfider/fider/graphs/contributors">contributors</a></sub>
 </div>
 
 <br />
@@ -33,8 +33,8 @@
 
 There are two options on how to get started with Fider
 
-- **Self-Hosted**: You can install Fider on any cloud providers. There is no fee associated and you are responsible for managing it. [Learn how](https://getfider.com/#get-started)
-- **Cloud**: Cloud Fider is a fully managed services where you get started in minutes. It's a Pay What You Can model where you contribute financially to support this project and we'll host Fider for you. [Sign up now](https://getfider.com/#get-started)
+- **Self-Hosted**: You can install Fider on any cloud providers. There is no fee associated and you are responsible for managing it. [Learn how]([https://fider.io/#get-started](https://fider.io/docs/hosting-instance))
+- **Cloud**: Cloud Fider is a fully managed services where you get started in minutes. Forget about managing software updates and patches, we do it all for you! [Sign up now](https://fider.io/#get-started)
 
 ## Contributors
 
